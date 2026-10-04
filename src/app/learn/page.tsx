@@ -70,22 +70,54 @@ function LearnPageContent() {
     setPhase("learning");
   };
 
-  const handleFeedback = (action: 'wrong' | 'review' | 'correct') => {
+  const handleFeedback = async (action: 'wrong' | 'review' | 'correct') => {
     const currentVocab = sessionList[currentIndex];
     
-    // Fire and forget, don't await to keep UI fast
     let status: 'review' | 'learned' = 'review';
     if (action === 'correct') status = 'learned';
     
-    upsertLearningProgress(currentVocab.id, status, action).catch(err => {
-      console.error("Failed to update progress", err);
-      // Optional: toast.error("Không thể lưu tiến độ.");
-    });
+    try {
+      // Bắt buộc chờ update Supabase thành công trước khi chuyển card
+      await upsertLearningProgress(currentVocab.id, status, action);
+      
+      // Update local state in case we need it
+      setSessionList(prev => {
+        const newList = [...prev];
+        const updatedVocab = { ...newList[currentIndex] };
+        
+        const currentProgress = updatedVocab.progress || {
+          id: 'temp-' + Date.now(),
+          vocabulary_id: updatedVocab.id,
+          status: 'new' as const,
+          wrong_count: 0,
+          correct_count: 0,
+          review_count: 0,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        };
 
-    if (currentIndex < sessionList.length - 1) {
-      setCurrentIndex(prev => prev + 1);
-    } else {
-      setPhase("complete");
+        updatedVocab.progress = {
+          ...currentProgress,
+          status,
+          wrong_count: action === 'wrong' ? currentProgress.wrong_count + 1 : currentProgress.wrong_count,
+          correct_count: action === 'correct' ? currentProgress.correct_count + 1 : currentProgress.correct_count,
+          review_count: (action === 'review' || action === 'wrong') ? currentProgress.review_count + 1 : currentProgress.review_count,
+          last_reviewed_at: new Date().toISOString()
+        };
+        
+        newList[currentIndex] = updatedVocab;
+        return newList;
+      });
+
+      // Nếu update thành công thì mới chuyển card
+      if (currentIndex < sessionList.length - 1) {
+        setCurrentIndex(prev => prev + 1);
+      } else {
+        setPhase("complete");
+      }
+    } catch (err) {
+      console.error("Failed to update progress", err);
+      toast.error("Không thể cập nhật tiến độ học.");
     }
   };
 

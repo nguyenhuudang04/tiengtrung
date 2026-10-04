@@ -2,6 +2,9 @@ import Link from "next/link";
 import { BookOpen, RefreshCw, BarChart2, Library, Plus, Target, CheckCircle2, XCircle } from "lucide-react";
 import { getExtendedDashboardStats } from "@/lib/statistics";
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function DashboardPage() {
   const stats = await getExtendedDashboardStats().catch(() => ({
     total: 0,

@@ -133,11 +133,11 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     });
 
     const total = totalVocab || 0;
-    // New = Total minus all that have records, OR status = new
+    // New = Total minus all that have records, OR status = new or learning
     // progressList contains all records (learned, review, learning, new)
     const trackedCount = progressList?.length || 0;
     const untrackedCount = total - trackedCount;
-    const explicitNewCount = (progressList || []).filter(p => p.status === 'new').length;
+    const explicitNewCount = (progressList || []).filter(p => p.status === 'new' || p.status === 'learning').length;
     
     const newCount = untrackedCount + explicitNewCount;
 

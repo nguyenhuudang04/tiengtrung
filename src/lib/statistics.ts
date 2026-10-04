@@ -36,7 +36,8 @@ export async function getExtendedDashboardStats(): Promise<ExtendedDashboardStat
     const total = totalVocab || 0;
     const trackedCount = progressList?.length || 0;
     const untrackedCount = total - trackedCount;
-    const explicitNewCount = (progressList || []).filter(p => p.status === 'new').length;
+    // New counts includes explicit 'new' and 'learning' status
+    const explicitNewCount = (progressList || []).filter(p => p.status === 'new' || p.status === 'learning').length;
     
     const newCount = untrackedCount + explicitNewCount;
 

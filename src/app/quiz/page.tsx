@@ -62,7 +62,9 @@ export default function QuizPage() {
 
     if (isCorrect) {
       setCorrectCount(prev => prev + 1);
-      upsertLearningProgress(vocabId, currentQuestion.vocabulary.progress?.status || 'learning', 'correct').catch(console.error);
+      const currentStatus = currentQuestion.vocabulary.progress?.status;
+      const statusToSet = (!currentStatus || currentStatus === 'new') ? 'learning' : currentStatus;
+      upsertLearningProgress(vocabId, statusToSet, 'correct').catch(console.error);
     } else {
       setWrongRecords(prev => [...prev, { question: currentQuestion, selectedMeaning: selected.meaning_vi }]);
       upsertLearningProgress(vocabId, 'review', 'wrong').catch(console.error);
