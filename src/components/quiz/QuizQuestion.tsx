@@ -149,7 +149,7 @@ export default function QuizQuestion({ question, currentIndex, total, difficulty
             <SpeechButton text={vocab.hanzi} />
           </div>
           
-          <h2 className="text-[44px] md:text-[64px] font-tc font-bold text-gray-900 leading-none tracking-tight mb-6 mt-2">
+          <h2 className="text-[44px] md:text-[64px] font-tc font-normal text-gray-900 leading-none tracking-tight mb-6 mt-2">
             {vocab.hanzi}
           </h2>
           {difficulty !== "hard" ? (

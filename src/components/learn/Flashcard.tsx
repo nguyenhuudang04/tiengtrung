@@ -86,7 +86,7 @@ export default function Flashcard({ vocabulary, currentIndex, total, onNext, onP
           </div>
           
           <div className="space-y-4 md:space-y-6">
-            <h2 className="text-[56px] md:text-[80px] font-tc font-bold text-gray-900 leading-none tracking-tight">
+            <h2 className="text-[56px] md:text-[80px] font-tc font-normal text-gray-900 leading-none tracking-tight">
               {vocabulary.hanzi}
             </h2>
           </div>

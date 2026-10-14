@@ -88,7 +88,7 @@ export default function QuizResult({ stats, onRetry, onReviewWrong }: Props) {
               return (
                 <div key={idx} className="bg-gray-50 border border-gray-100 rounded-2xl p-4 md:p-5 flex flex-col md:flex-row md:items-center gap-4">
                   <div className="shrink-0 flex items-center gap-4">
-                    <div className="w-14 h-14 bg-white rounded-xl shadow-sm border border-gray-200 flex items-center justify-center text-3xl font-tc font-bold text-gray-900">
+                    <div className="w-14 h-14 bg-white rounded-xl shadow-sm border border-gray-200 flex items-center justify-center text-3xl font-tc font-normal text-gray-900">
                       {record.question.vocabulary.hanzi}
                     </div>
                   </div>
